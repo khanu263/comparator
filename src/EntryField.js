@@ -9,7 +9,7 @@ import { Box, Button, Select, TextInput } from "grommet";
 import { Close } from "grommet-icons";
 
 // Options for type select
-const options = ["film", "tv show", "game", "music", "other"];
+const options = ["film", "tv show", "other"];
 
 // Define EntryField component
 class EntryField extends React.Component {

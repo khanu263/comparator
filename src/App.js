@@ -6,6 +6,7 @@
 // Imports
 import React from "react";
 import Entry from "./Entry";
+import Validate from "./Validate";
 import Ranker from "./Ranker";
 import Results from "./Results";
 
@@ -19,6 +20,7 @@ class App extends React.Component {
 
     // These functions are used by other components to change the page
     this.toEntry = this.toEntry.bind(this);
+    this.toValidate = this.toValidate.bind(this);
     this.toRanker = this.toRanker.bind(this);
     this.toResults = this.toResults.bind(this);
   }
@@ -28,29 +30,35 @@ class App extends React.Component {
     this.setState({ page: 1 });
   }
 
+  // Change the page to validation
+  toValidate() {
+    this.setState({ page: 2 });
+  }
+
   // Change the page to ranking
   toRanker() {
-    this.setState({ page: 2 });
+    this.setState({ page: 3 });
   }
 
   // Change the page to results
   toResults() {
-    this.setState({ page: 3 });
+    this.setState({ page: 4 });
   }
 
   // Render based on the state of page
   render() {
-    const { page } = this.state;
-    let Page;
-    if (page === 1) {
-      Page = <Entry changePage={this.toRanker} />;
-    } else if (page === 2) {
-      Page = <Ranker changePage={this.toResults} />;
-    } else if (page === 3) {
-      Page = <Results changePage={this.toEntry} />;
+    switch (this.state.page) {
+      case 1:
+        return <Entry changePage={this.toValidate} />;
+      case 2:
+        return <Validate changePage={this.toRanker} />;
+      case 3:
+        return <Ranker changePage={this.toResults} />;
+      case 4:
+        return <Results changePage={this.toEntry} />;
+      default:
+        return <Entry changePage={this.toValidate} />;
     }
-
-    return Page;
   }
 }
 
