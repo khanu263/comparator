@@ -6,7 +6,7 @@
 const Theme = {
   global: {
     font: {
-      family: "Helvetica Neue",
+      family: "Karla",
     },
   },
   heading: {

@@ -11,7 +11,7 @@ import Entry from "./Entry";
 // Render entry page
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Entry />
   </React.StrictMode>,
   document.getElementById("root")
 );
