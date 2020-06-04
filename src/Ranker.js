@@ -13,7 +13,7 @@ class Ranker extends React.Component {
     return (
       <Box direction="column" align="center" pad="large">
         <Heading level="1">Ranker.</Heading>
-        <Button primary color="brand" label="Next" onClick={this.props.changePage} />
+        <Button primary color="brand" label="Next" onClick={this.props.nextPage} />
       </Box>
     );
   }

@@ -7,6 +7,7 @@
 import React from "react";
 import { Box, Button, Heading, Paragraph } from "grommet";
 import EntryField from "./EntryField";
+import data from "./data";
 
 // Define Entry component
 class Entry extends React.Component {
@@ -34,6 +35,7 @@ class Entry extends React.Component {
     // Bind functions
     this.createFields = this.createFields.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.checkAndContinue = this.checkAndContinue.bind(this);
   }
 
   // Create the fields based on the current state
@@ -100,6 +102,25 @@ class Entry extends React.Component {
     }));
   }
 
+  // Make sure all items are filled and continue to validation
+  checkAndContinue() {
+    // Go through fields and check for empty
+    let goodToGo = true;
+    this.state.values.forEach((element) => {
+      if (goodToGo && (element.name === "" || element.type === "")) {
+        goodToGo = false;
+      }
+    });
+
+    // Alert user or move to next page
+    if (goodToGo) {
+      data.UserInput = this.state.values;
+      this.props.nextPage();
+    } else {
+      alert("Please fill out all fields before proceeding.");
+    }
+  }
+
   // Render page
   render() {
     const fields = this.createFields();
@@ -116,7 +137,7 @@ class Entry extends React.Component {
         </Box>
         <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em" }}>
           <Button primary color="brand" label="Add Item" onClick={this.addItem} />
-          <Button primary color="brand" label="Next" onClick={this.props.changePage} />
+          <Button primary color="brand" label="Next" onClick={this.checkAndContinue} />
         </Box>
       </Box>
     );

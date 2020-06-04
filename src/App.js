@@ -49,15 +49,15 @@ class App extends React.Component {
   render() {
     switch (this.state.page) {
       case 1:
-        return <Entry changePage={this.toValidate} />;
+        return <Entry nextPage={this.toValidate} />;
       case 2:
-        return <Validate changePage={this.toRanker} />;
+        return <Validate nextPage={this.toRanker} />;
       case 3:
-        return <Ranker changePage={this.toResults} />;
+        return <Ranker nextPage={this.toResults} />;
       case 4:
-        return <Results changePage={this.toEntry} />;
+        return <Results nextPage={this.toEntry} />;
       default:
-        return <Entry changePage={this.toValidate} />;
+        return <Entry nextPage={this.toValidate} />;
     }
   }
 }

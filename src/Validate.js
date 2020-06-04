@@ -6,6 +6,7 @@
 // Imports
 import React from "react";
 import { Box, Button, Heading } from "grommet";
+import data from "./data";
 
 // Define Ranker component
 class Validate extends React.Component {
@@ -13,7 +14,7 @@ class Validate extends React.Component {
     return (
       <Box direction="column" align="center" pad="large">
         <Heading level="1">Validate.</Heading>
-        <Button primary color="brand" label="Next" onClick={this.props.changePage} />
+        <Button primary color="brand" label="Next" onClick={this.props.nextPage} />
       </Box>
     );
   }

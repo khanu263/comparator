@@ -13,7 +13,7 @@ class Results extends React.Component {
     return (
       <Box direction="column" align="center" pad="large">
         <Heading level="1">Results.</Heading>
-        <Button primary color="brand" label="Next" onClick={this.props.changePage} />
+        <Button primary color="brand" label="Next" onClick={this.props.nextPage} />
       </Box>
     );
   }
