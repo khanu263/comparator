@@ -1,7 +1,14 @@
+// index.js
+// by Umair Khan
+
+// Main coordination file for app.
+
+// Imports
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Entry from "./Entry";
 
+// Render entry page
 ReactDOM.render(
   <React.StrictMode>
     <App />
