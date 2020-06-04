@@ -18,4 +18,5 @@ const AppHeader = () => (
   </Header>
 );
 
+// Export header
 export default AppHeader;
