@@ -6,7 +6,7 @@
 // Imports
 import React from "react";
 import ReactDOM from "react-dom";
-import { Box, Grommet } from "grommet";
+import { Grommet } from "grommet";
 import Theme from "./Theme";
 import AppHeader from "./AppHeader";
 import App from "./App";
@@ -15,10 +15,8 @@ import App from "./App";
 ReactDOM.render(
   <React.StrictMode>
     <Grommet theme={Theme} full>
-      <Box fill>
-        <AppHeader />
-        <App />
-      </Box>
+      <AppHeader />
+      <App />
     </Grommet>
   </React.StrictMode>,
   document.getElementById("root")

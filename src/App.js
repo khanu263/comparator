@@ -41,7 +41,6 @@ class App extends React.Component {
   // Render based on the state of page
   render() {
     const { page } = this.state;
-    console.log(page);
     let Page;
     if (page === 1) {
       Page = <Entry changePage={this.toRanker} />;
