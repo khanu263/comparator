@@ -5,6 +5,9 @@
 
 const Theme = {
   global: {
+    colors: {
+      brand: "#000",
+    },
     font: {
       family: "Karla",
     },
