@@ -6,6 +6,7 @@
 // Imports
 import React from "react";
 import { Box, Button, Heading, Paragraph } from "grommet";
+import ValidateItem from "./ValidateItem";
 import data from "./data";
 
 // Define Ranker component
@@ -44,10 +45,19 @@ class Validate extends React.Component {
         <Heading level="1" margin={{ top: "0.1em", bottom: "0.4em" }}>
           Final checks.
         </Heading>
-        <Paragraph size="large" margin={{ top: "0", bottom: "2em" }} textAlign="center">
+        <Paragraph size="large" margin={{ top: "0", bottom: "1.6em" }} textAlign="center">
           Review your items below and resolve any issues.
         </Paragraph>
-        <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em", bottom: "0.8em" }}>
+        <Box direction="column" width="large" justify="around">
+          <ValidateItem entry={this.userEntrySnapshot[6]} />
+          <ValidateItem entry={this.userEntrySnapshot[5]} options={[]} />
+          <ValidateItem entry={this.userEntrySnapshot[5]} options={["test"]} />
+          <ValidateItem entry={this.userEntrySnapshot[5]} options={["test", "other"]} />
+          <ValidateItem entry={this.userEntrySnapshot[6]} />
+          <ValidateItem entry={this.userEntrySnapshot[5]} options={[]} />
+          <ValidateItem entry={this.userEntrySnapshot[5]} options={["test"]} />
+        </Box>
+        <Box direction="row" align="center" gap="medium" margin={{ top: "2.5em", bottom: "0.8em" }}>
           <Button secondary color="brand" label="Previous" onClick={this.resetAndReturn} />
           <Button primary color="brand" label="Next" />
         </Box>
