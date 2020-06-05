@@ -51,7 +51,7 @@ class App extends React.Component {
       case 1:
         return <Entry nextPage={this.toValidate} />;
       case 2:
-        return <Validate nextPage={this.toRanker} />;
+        return <Validate prevPage={this.toEntry} nextPage={this.toRanker} />;
       case 3:
         return <Ranker nextPage={this.toResults} />;
       case 4:

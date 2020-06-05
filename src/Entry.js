@@ -14,27 +14,15 @@ class Entry extends React.Component {
   constructor(props) {
     super(props);
 
-    // The state for this component contains all fields, initialized to three
+    // The state for this component contains all fields, based on global user input
     this.state = {
-      values: [
-        {
-          name: "",
-          type: "",
-        },
-        {
-          name: "",
-          type: "",
-        },
-        {
-          name: "",
-          type: "",
-        },
-      ],
+      values: [...data.UserInput],
     };
 
     // Bind functions
     this.createFields = this.createFields.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.reset = this.reset.bind(this);
     this.checkAndContinue = this.checkAndContinue.bind(this);
   }
 
@@ -102,6 +90,26 @@ class Entry extends React.Component {
     }));
   }
 
+  // Reset form
+  reset() {
+    this.setState(() => ({
+      values: [
+        {
+          name: "",
+          type: "",
+        },
+        {
+          name: "",
+          type: "",
+        },
+        {
+          name: "",
+          type: "",
+        },
+      ],
+    }));
+  }
+
   // Make sure all items are filled and continue to validation
   checkAndContinue() {
     // Go through fields and check for empty
@@ -112,9 +120,9 @@ class Entry extends React.Component {
       }
     });
 
-    // Alert user or move to next page
+    // Alert user or set values globally and move to next page
     if (goodToGo) {
-      data.UserInput = this.state.values;
+      data.UserInput = [...this.state.values];
       this.props.nextPage();
     } else {
       alert("Please fill out all fields before proceeding.");
@@ -137,6 +145,7 @@ class Entry extends React.Component {
         </Box>
         <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em", bottom: "0.8em" }}>
           <Button primary color="brand" label="Add Item" onClick={this.addItem} />
+          <Button primary color="brand" label="Reset" onClick={this.reset} />
           <Button primary color="brand" label="Next" onClick={this.checkAndContinue} />
         </Box>
       </Box>
