@@ -125,8 +125,8 @@ class Entry extends React.Component {
   render() {
     const fields = this.createFields();
     return (
-      <Box direction="column" align="center" pad="large">
-        <Heading level="1" margin={{ bottom: "0.4em" }}>
+      <Box background="#fff" direction="column" align="center" pad="large">
+        <Heading level="1" margin={{ top: "0.1em", bottom: "0.4em" }}>
           Rank anything.
         </Heading>
         <Paragraph size="large" margin={{ top: "0", bottom: "2em" }} textAlign="center">
@@ -135,7 +135,7 @@ class Entry extends React.Component {
         <Box direction="column" width="large" justify="start">
           {fields}
         </Box>
-        <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em" }}>
+        <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em", bottom: "0.8em" }}>
           <Button primary color="brand" label="Add Item" onClick={this.addItem} />
           <Button primary color="brand" label="Next" onClick={this.checkAndContinue} />
         </Box>

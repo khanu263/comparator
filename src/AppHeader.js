@@ -1,4 +1,4 @@
-// Header.js
+// AppHeader.js
 // by Umair Khan
 
 // Header for use at all times.

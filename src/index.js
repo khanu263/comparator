@@ -9,6 +9,7 @@ import ReactDOM from "react-dom";
 import { Grommet } from "grommet";
 import Theme from "./Theme";
 import AppHeader from "./AppHeader";
+import AppFooter from "./AppFooter";
 import App from "./App";
 
 // Render app
@@ -17,6 +18,7 @@ ReactDOM.render(
     <Grommet theme={Theme} full>
       <AppHeader />
       <App />
+      <AppFooter />
     </Grommet>
   </React.StrictMode>,
   document.getElementById("root")
