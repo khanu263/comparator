@@ -9,6 +9,42 @@ import { Box, Button, Heading, Paragraph } from "grommet";
 import ValidateItem from "./ValidateItem";
 import data from "./data";
 
+// Function to format date given YYYY[-MM[-DD]]
+function formatDate(date) {
+  // Define the months
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Split the date and get the year
+  let split = date.split("-");
+  let year = split[0];
+
+  // Get the month
+  let month = "";
+  if (split.length > 1) month = months[parseInt(split[1]) - 1];
+
+  // Get the day
+  let day = "";
+  if (split.length > 2) day = split[2];
+
+  // Return string
+  if (month === "") return year;
+  if (month !== "" && day === "") return `${month} ${year}`;
+  if (month !== "" && day !== "") return `${month} ${day}, ${year}`;
+}
+
 // Define Ranker component
 class Validate extends React.Component {
   constructor(props) {
@@ -21,13 +57,15 @@ class Validate extends React.Component {
     this.state = {
       items: new Array(data.UserInput.length),
     };
+
+    // Bind functions
+    this.fillAndContinue = this.fillAndContinue.bind(this);
   }
 
   // Update the name ID of an item in the data array based on selection
   updateID(i, event) {
     data.Items[i].name = event.value.name;
     data.Items[i].tmdb_id = event.value.tmdb_id;
-    console.log(data.Items);
   }
 
   // Validate a user entry
@@ -54,7 +92,7 @@ class Validate extends React.Component {
 
       // Make the API call
       fetch(search_url)
-        .then((result) => result.json())
+        .then((response) => response.json())
         .then((result) => {
           // If no results are found, set the data type to other and set message
           if (result.total_results === 0) {
@@ -141,6 +179,105 @@ class Validate extends React.Component {
     }
   }
 
+  // Use the validated IDs to get information about items before moving to ranking
+  fillAndContinue() {
+    // Check to make sure that all IDs have been filled
+    let goodToGo = true;
+    data.Items.forEach((item) => {
+      if (item.type !== "other" && item.tmdb_id === "") goodToGo = false;
+    });
+
+    // Check the boolean
+    if (!goodToGo) {
+      alert("Please resolve all match issues before proceeding.");
+    } else {
+      // Go through data items
+      data.Items.forEach((item) => {
+        // If the type is "other", nothing to do
+        if (item.type === "other") return;
+
+        // Otherwise, build the API URL based on type
+        let info_url;
+        if (item.type === "film") {
+          info_url = `https://api.themoviedb.org/3/movie/${item.tmdb_id}`;
+        } else if (item.type === "tv show") {
+          info_url = `https://api.themoviedb.org/3/tv/${item.tmdb_id}`;
+        }
+
+        // Add the API key
+        info_url = `${info_url}?api_key=${process.env.REACT_APP_TMDB_KEY}`;
+        if (item.type === "film") info_url = `${info_url}&append_to_response=credits`;
+
+        // Call the API
+        fetch(info_url)
+          .then((response) => response.json())
+          .then((result) => {
+            // Add the poster path and the overview
+            if (result.poster_path && result.poster_path !== "")
+              item.poster = `https://image.tmdb.org/t/p/w342${result.poster_path}`;
+            else item.poster = "(no poster found)";
+            if (result.overview && result.overview !== "") item.overview = result.overview;
+            else item.overview = "(no overview found)";
+
+            // Films get director, release date, and runtime, whereas
+            // shows get creator, first air date, and # of seasons/episodes
+            if (item.type === "film") {
+              // Get list of directors
+              let directors = [];
+              if (result.credits && result.credits.crew) {
+                result.credits.crew.forEach((member) => {
+                  if (member.job === "Director") directors.push(member.name);
+                });
+              }
+
+              // Add director(s)
+              if (directors.length > 0) item.director = directors.join(", ");
+              else item.director = "(no director(s) found)";
+
+              // Add release date
+              if (result.release_date && result.release_date !== "") item.released = formatDate(result.release_date);
+              else item.released = "(no date found)";
+
+              // Add runtime
+              if (result.runtime) item.runtime = `${result.runtime} min.`;
+              else item.runtime = "(no runtime found)";
+            } else if (item.type === "tv show") {
+              // Get list of creators
+              let creators = [];
+              if (result.created_by) {
+                result.created_by.forEach((member) => {
+                  creators.push(member.name);
+                });
+              }
+
+              // Add creator(s)
+              if (creators.length > 0) item.created_by = creators.join(", ");
+              else item.created_by = "(no creator(s) found)";
+
+              // Add first air date
+              if (result.first_air_date && result.first_air_date !== "")
+                item.first_aired = formatDate(result.first_air_date);
+              else item.first_aired = "(no date found)";
+
+              // Add number of seasons
+              if (result.number_of_seasons && result.number_of_seasons !== "")
+                item.seasons = result.number_of_seasons.toString();
+              else item.seasons = "(season data not found)";
+
+              // Add number of episodes
+              if (result.number_of_episodes && result.number_of_episodes !== "")
+                item.episodes = result.number_of_episodes.toString();
+              else item.episodes = "(episode data not found)";
+            }
+          })
+          .then(() => {
+            // Move to next page
+            this.props.nextPage();
+          });
+      });
+    }
+  }
+
   // Perform validation when the component mounts
   componentDidMount() {
     data.UserInput.forEach((entry, i) => this.validateEntry(i, entry));
@@ -161,7 +298,7 @@ class Validate extends React.Component {
         </Box>
         <Box direction="row" align="center" gap="medium" margin={{ top: "2.5em", bottom: "0.8em" }}>
           <Button secondary color="brand" label="Previous" onClick={this.props.prevPage} />
-          <Button primary color="brand" label="Next" />
+          <Button primary color="brand" label="Next" onClick={this.fillAndContinue} />
         </Box>
       </Box>
     );
