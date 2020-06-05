@@ -3,21 +3,24 @@
 
 // Everything relating to the actual ranking algorithm.
 
-// Array to hold raw user input.
-// var UserInput = [
-//   {
-//     name: "",
-//     type: "",
-//   },
-//   {
-//     name: "",
-//     type: "",
-//   },
-//   {
-//     name: "",
-//     type: "",
-//   },
-// ];
+// Array representing the initial empty form
+var EmptyForm = [
+  {
+    name: "",
+    type: "",
+  },
+  {
+    name: "",
+    type: "",
+  },
+  {
+    name: "",
+    type: "",
+  },
+];
+
+// Array to hold user input from form
+// var UserInput = [...EmptyForm];
 
 var UserInput = [
   {
@@ -54,4 +57,4 @@ var UserInput = [
 var Items = [];
 
 // Export everything
-export default { UserInput, Items };
+export default { EmptyForm, UserInput, Items };

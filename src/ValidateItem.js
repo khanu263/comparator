@@ -57,7 +57,7 @@ class ValidateItem extends React.Component {
           <CaretNext size="0.7em" />
           <Paragraph>Multiple matches found.</Paragraph>
           <CaretNext size="0.7em" />
-          <Select placeholder="select match" options={this.props.options} />
+          <Select placeholder="select match" labelKey="label" options={this.props.options} onChange={this.props.updateID} />
         </Box>
       );
     }

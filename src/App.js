@@ -16,7 +16,7 @@ class App extends React.Component {
     super(props);
 
     // The state for this component is just a number for the page
-    this.state = { page: 0 };
+    this.state = { page: 1 };
 
     // These functions are used by other components to change the page
     this.toEntry = this.toEntry.bind(this);

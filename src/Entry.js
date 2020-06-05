@@ -93,20 +93,7 @@ class Entry extends React.Component {
   // Reset form
   reset() {
     this.setState(() => ({
-      values: [
-        {
-          name: "",
-          type: "",
-        },
-        {
-          name: "",
-          type: "",
-        },
-        {
-          name: "",
-          type: "",
-        },
-      ],
+      values: [...data.EmptyForm],
     }));
   }
 
