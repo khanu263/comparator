@@ -5,14 +5,22 @@
 
 // Imports
 import React from "react";
-import { Box, Button, Heading } from "grommet";
+import { Box, Button, Heading, Paragraph } from "grommet";
 
 // Define Ranker component
 class Ranker extends React.Component {
   render() {
     return (
-      <Box direction="column" align="center" pad="large">
-        <Heading level="1">Ranker.</Heading>
+      <Box background="#fff" direction="column" align="center" pad="large">
+        <Heading level="1" margin={{ top: "0.1em", bottom: "0.4em" }}>
+          Decision time.
+        </Heading>
+        <Paragraph size="large" margin={{ top: "0", bottom: "0" }} textAlign="center">
+          Pick your favorite between the two.
+        </Paragraph>
+        <Paragraph size="large" margin={{ top: "0.3em", bottom: "2em" }} textAlign="center">
+          (If you really have to, call it a draw.)
+        </Paragraph>
         <Button primary color="brand" label="Next" onClick={this.props.nextPage} />
       </Box>
     );

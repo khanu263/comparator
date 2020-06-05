@@ -130,7 +130,7 @@ class Entry extends React.Component {
           Rank anything.
         </Heading>
         <Paragraph size="large" margin={{ top: "0", bottom: "2em" }} textAlign="center">
-          Enter your items below to get started.
+          Add your items below to get started.
         </Paragraph>
         <Box direction="column" width="large" justify="start">
           {fields}
