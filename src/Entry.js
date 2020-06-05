@@ -130,7 +130,7 @@ class Entry extends React.Component {
         <Box direction="column" width="large" justify="start">
           {fields}
         </Box>
-        <Box direction="row" align="center" gap="medium" margin={{ top: "1.5em", bottom: "0.8em" }}>
+        <Box direction="row-responsive" align="center" gap="medium" margin={{ top: "1.5em", bottom: "0.8em" }}>
           <Button primary color="brand" label="Add Item" onClick={this.addItem} />
           <Button primary color="brand" label="Reset" onClick={this.reset} />
           <Button primary color="brand" label="Next" onClick={this.checkAndContinue} />

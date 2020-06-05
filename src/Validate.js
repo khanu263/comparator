@@ -293,7 +293,7 @@ class Validate extends React.Component {
         <Paragraph size="large" margin={{ top: "0", bottom: "1.6em" }} textAlign="center">
           Review your items below and resolve any issues.
         </Paragraph>
-        <Box direction="column" width="large" justify="around">
+        <Box direction="column" width="large">
           {this.state.items}
         </Box>
         <Box direction="row" align="center" gap="medium" margin={{ top: "2.5em", bottom: "0.8em" }}>

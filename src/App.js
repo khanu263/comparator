@@ -16,7 +16,7 @@ class App extends React.Component {
     super(props);
 
     // The state for this component is just a number for the page
-    this.state = { page: 0 };
+    this.state = { page: 3 };
 
     // These functions are used by other components to change the page
     this.toEntry = this.toEntry.bind(this);
@@ -53,11 +53,11 @@ class App extends React.Component {
       case 2:
         return <Validate prevPage={this.toEntry} nextPage={this.toRanker} />;
       case 3:
-        return <Ranker nextPage={this.toResults} />;
+        return <Ranker returnToStart={this.toEntry} nextPage={this.toResults} />;
       case 4:
         return <Results nextPage={this.toEntry} />;
       default:
-        return <Ranker nextPage={this.toResults} />;
+        return <Ranker returnToStart={this.toEntry} nextPage={this.toResults} />;
     }
   }
 }

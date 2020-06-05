@@ -63,7 +63,7 @@ var Items = [
     overview:
       "Picking up where the television series left off, 'The Pretender 2001' features even deeper explorations in the show's mythology, including a revealing look back at how Jarod originally espaced from the Centre. But now he must infiltrate the NSA to capture a ruthless assassin who might be a fellow Pretender from his past!",
     poster: "(no poster found)",
-    release: "January 22, 2001",
+    released: "January 22, 2001",
     runtime: "91 min.",
     tmdb_id: "27338",
     type: "film",
