@@ -51,11 +51,11 @@ class Validate extends React.Component {
     super(props);
 
     // Set the global data array to have the same size as the user entry array
-    data.Items = new Array(data.UserInput.length).fill({});
+    data.items = new Array(data.input.length).fill({});
 
     // The state for this component is the list of ValidateItem components
     this.state = {
-      items: new Array(data.UserInput.length),
+      items: new Array(data.input.length),
     };
 
     // Bind functions
@@ -64,15 +64,15 @@ class Validate extends React.Component {
 
   // Update the name ID of an item in the data array based on selection
   updateID(i, event) {
-    data.Items[i].name = event.value.name;
-    data.Items[i].tmdb_id = event.value.tmdb_id;
+    data.items[i].name = event.value.name;
+    data.items[i].tmdb_id = event.value.tmdb_id;
   }
 
   // Validate a user entry
   validateEntry(i, entry) {
     // If the type is "other", immediately update the data array and set element
     if (entry.type === "other") {
-      data.Items[i] = { name: entry.name, type: "other" };
+      data.items[i] = { name: entry.name, type: "other" };
       let current_items = [...this.state.items];
       current_items[i] = <ValidateItem key={i} entry={entry} />;
       this.setState({
@@ -96,7 +96,7 @@ class Validate extends React.Component {
         .then((result) => {
           // If no results are found, set the data type to other and set message
           if (result.total_results === 0) {
-            data.Items[i] = { name: entry.name, type: "other" };
+            data.items[i] = { name: entry.name, type: "other" };
             let current_items = [...this.state.items];
             current_items[i] = <ValidateItem key={i} entry={entry} options={[]} />;
             this.setState({
@@ -111,7 +111,7 @@ class Validate extends React.Component {
               } else if (entry.type === "tv show") {
                 name = result.results[0].name;
               }
-              data.Items[i] = { name: name, type: entry.type, tmdb_id: result.results[0].id.toString() };
+              data.items[i] = { name: name, type: entry.type, tmdb_id: result.results[0].id.toString() };
               let current_items = [...this.state.items];
               current_items[i] = <ValidateItem key={i} entry={entry} options={[""]} />;
               this.setState({
@@ -120,7 +120,7 @@ class Validate extends React.Component {
             }
           } else {
             // If multiple matches are found, push data with empty name and id
-            data.Items[i] = { name: "", type: entry.type, tmdb_id: "" };
+            data.items[i] = { name: "", type: entry.type, tmdb_id: "" };
 
             // Pick the top five (or less) matches
             let subset_results = [];
@@ -183,7 +183,7 @@ class Validate extends React.Component {
   fillAndContinue() {
     // Check to make sure that all IDs have been filled
     let goodToGo = true;
-    data.Items.forEach((item) => {
+    data.items.forEach((item) => {
       if (item.type !== "other" && item.tmdb_id === "") goodToGo = false;
     });
 
@@ -192,7 +192,7 @@ class Validate extends React.Component {
       alert("Please resolve all match issues before proceeding.");
     } else {
       // Go through data items
-      data.Items.forEach((item) => {
+      data.items.forEach((item) => {
         // If the type is "other", nothing to do
         if (item.type === "other") return;
 
@@ -280,7 +280,7 @@ class Validate extends React.Component {
 
   // Perform validation when the component mounts
   componentDidMount() {
-    data.UserInput.forEach((entry, i) => this.validateEntry(i, entry));
+    data.input.forEach((entry, i) => this.validateEntry(i, entry));
   }
 
   // Render the component

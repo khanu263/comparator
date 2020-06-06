@@ -16,7 +16,7 @@ class Entry extends React.Component {
 
     // The state for this component contains all fields, based on global user input
     this.state = {
-      values: [...data.UserInput],
+      values: [...data.input],
     };
 
     // Bind functions
@@ -93,7 +93,7 @@ class Entry extends React.Component {
   // Reset form
   reset() {
     this.setState(() => ({
-      values: [...data.EmptyForm],
+      values: [...data.emptyForm],
     }));
   }
 
@@ -109,7 +109,7 @@ class Entry extends React.Component {
 
     // Alert user or set values globally and move to next page
     if (goodToGo) {
-      data.UserInput = [...this.state.values];
+      data.input = [...this.state.values];
       this.props.nextPage();
     } else {
       alert("Please fill out all fields before proceeding.");

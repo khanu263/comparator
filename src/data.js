@@ -4,7 +4,7 @@
 // Everything relating to the actual ranking algorithm.
 
 // Array representing the initial empty form
-var EmptyForm = [
+var emptyForm = [
   {
     name: "",
     type: "",
@@ -20,9 +20,9 @@ var EmptyForm = [
 ];
 
 // Array to hold user input from form
-// var UserInput = [...EmptyForm];
+// var input = [...EmptyForm];
 
-var UserInput = [
+var input = [
   {
     name: "2001",
     type: "film",
@@ -54,9 +54,9 @@ var UserInput = [
 ];
 
 // Array to hold processed user input, after validation and API calls.
-// var Items = [];
+// var items;
 
-var Items = [
+var items = [
   {
     director: "Frederick King Keller",
     name: "The Pretender 2001",
@@ -104,10 +104,47 @@ var Items = [
     type: "tv show",
   },
   {
-    name: "Pac-Man",
+    name: "testing out a very long title that wraps",
+    type: "other",
+  },
+  {
+    name: "and another one that should also wrap if given the chance",
     type: "other",
   },
 ];
 
+// Array to hold points for each object in Item array
+var points;
+
+// In-place Fisher-Yates shuffle on the given array
+// (https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb)
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i);
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+// Function to generate randomly-shuffled matchups encompassing every
+// item the user has entered
+function generateMatchups() {
+  // Generate the matchups -- each one is shuffled
+  let matchups = [];
+  for (let i = 0; i < items.length - 1; i++) {
+    for (let j = i + 1; j < items.length; j++) {
+      let matchup;
+      if (Math.random() < 0.5) matchup = [i, j];
+      else matchup = [j, i];
+      matchups.push(matchup);
+    }
+  }
+
+  // Shuffle entire array and return
+  shuffle(matchups);
+  return matchups;
+}
+
 // Export everything
-export default { EmptyForm, UserInput, Items };
+export default { emptyForm, input, items, points, generateMatchups };
