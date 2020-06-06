@@ -72,12 +72,11 @@ class Validate extends React.Component {
   validateEntry(i, entry) {
     // If the type is "other", immediately update the data array and set element
     if (entry.type === "other") {
-      data.items[i] = { name: entry.name, type: "other" };
-      let current_items = [...this.state.items];
-      current_items[i] = <ValidateItem key={i} entry={entry} />;
-      this.setState({
-        items: current_items,
-      });
+      data.items[i] = { name: entry.name, type: "other", score: "-" };
+      let item = <ValidateItem key={i} entry={entry} />;
+      this.setState(({ items }) => ({
+        items: [...items.slice(0, i), item, ...items.slice(i + 1)],
+      }));
     } else {
       // Otherwise, set up the API search call
       let search_url = "https://api.themoviedb.org/3/search";
@@ -96,12 +95,11 @@ class Validate extends React.Component {
         .then((result) => {
           // If no results are found, set the data type to other and set message
           if (result.total_results === 0) {
-            data.items[i] = { name: entry.name, type: "other" };
-            let current_items = [...this.state.items];
-            current_items[i] = <ValidateItem key={i} entry={entry} options={[]} />;
-            this.setState({
-              items: current_items,
-            });
+            data.items[i] = { name: entry.name, type: "other", score: "-" };
+            let item = <ValidateItem key={i} entry={entry} options={[]} />;
+            this.setState(({ items }) => ({
+              items: [...items.slice(0, i), item, ...items.slice(i + 1)],
+            }));
           } else if (result.total_results === 1) {
             // If exactly one result is found, use that as the item
             if (result.total_results === 1) {
@@ -112,11 +110,10 @@ class Validate extends React.Component {
                 name = result.results[0].name;
               }
               data.items[i] = { name: name, type: entry.type, tmdb_id: result.results[0].id.toString() };
-              let current_items = [...this.state.items];
-              current_items[i] = <ValidateItem key={i} entry={entry} options={[""]} />;
-              this.setState({
-                items: current_items,
-              });
+              let item = <ValidateItem key={i} entry={entry} options={[""]} />;
+              this.setState(({ items }) => ({
+                items: [...items.slice(0, i), item, ...items.slice(i + 1)],
+              }));
             }
           } else {
             // If multiple matches are found, push data with empty name and id
@@ -164,16 +161,13 @@ class Validate extends React.Component {
 
               // Push to option list
               options.push({ label: option_str, name: name, tmdb_id: match.id.toString() });
-
-              // Set the element with item selection
-              let current_items = [...this.state.items];
-              current_items[i] = (
-                <ValidateItem key={i} entry={entry} options={options} updateID={this.updateID.bind(this, i)} />
-              );
-              this.setState({
-                items: current_items,
-              });
             });
+
+            // Set the element with item selection
+            let item = <ValidateItem key={i} entry={entry} options={options} updateID={this.updateID.bind(this, i)} />;
+            this.setState(({ items }) => ({
+              items: [...items.slice(0, i), item, ...items.slice(i + 1)],
+            }));
           }
         });
     }
@@ -191,8 +185,14 @@ class Validate extends React.Component {
     if (!goodToGo) {
       alert("Please resolve all match issues before proceeding.");
     } else {
+      // Initialize an array of promises
+      let promises = [];
+
       // Go through data items
       data.items.forEach((item) => {
+        // Initialize points to 0 for each item
+        item.points = 0;
+
         // If the type is "other", nothing to do
         if (item.type === "other") return;
 
@@ -208,73 +208,77 @@ class Validate extends React.Component {
         info_url = `${info_url}?api_key=${process.env.REACT_APP_TMDB_KEY}`;
         if (item.type === "film") info_url = `${info_url}&append_to_response=credits`;
 
-        // Call the API
-        fetch(info_url)
-          .then((response) => response.json())
-          .then((result) => {
-            // Add the poster path and the overview
-            if (result.poster_path && result.poster_path !== "")
-              item.poster = `https://image.tmdb.org/t/p/w342${result.poster_path}`;
-            else item.poster = "(no poster found)";
-            if (result.overview && result.overview !== "") item.overview = result.overview;
-            else item.overview = "(no overview found)";
+        // Push the promise to call the API
+        promises.push(
+          fetch(info_url)
+            .then((response) => response.json())
+            .then((result) => {
+              // Add the poster path, overview, and average score
+              if (result.poster_path && result.poster_path !== "")
+                item.poster = `https://image.tmdb.org/t/p/w342${result.poster_path}`;
+              else item.poster = "(no poster found)";
+              if (result.overview && result.overview !== "") item.overview = result.overview;
+              else item.overview = "(no overview found)";
+              if (result.vote_count && result.vote_count > 0 && result.vote_average)
+                item.score = result.vote_average.toString();
+              else item.score = "(no score found)";
 
-            // Films get director, release date, and runtime, whereas
-            // shows get creator, first air date, and # of seasons/episodes
-            if (item.type === "film") {
-              // Get list of directors
-              let directors = [];
-              if (result.credits && result.credits.crew) {
-                result.credits.crew.forEach((member) => {
-                  if (member.job === "Director") directors.push(member.name);
-                });
+              // Films get director, release date, and runtime, whereas
+              // shows get creator, first air date, and # of seasons/episodes
+              if (item.type === "film") {
+                // Get list of directors
+                let directors = [];
+                if (result.credits && result.credits.crew) {
+                  result.credits.crew.forEach((member) => {
+                    if (member.job === "Director") directors.push(member.name);
+                  });
+                }
+
+                // Add director(s)
+                if (directors.length > 0) item.director = directors.join(", ");
+                else item.director = "(no director(s) found)";
+
+                // Add release date
+                if (result.release_date && result.release_date !== "") item.released = formatDate(result.release_date);
+                else item.released = "(no date found)";
+
+                // Add runtime
+                if (result.runtime) item.runtime = `${result.runtime} min.`;
+                else item.runtime = "(no runtime found)";
+              } else if (item.type === "tv show") {
+                // Get list of creators
+                let creators = [];
+                if (result.created_by) {
+                  result.created_by.forEach((member) => {
+                    creators.push(member.name);
+                  });
+                }
+
+                // Add creator(s)
+                if (creators.length > 0) item.created_by = creators.join(", ");
+                else item.created_by = "(no creator(s) found)";
+
+                // Add first air date
+                if (result.first_air_date && result.first_air_date !== "")
+                  item.first_aired = formatDate(result.first_air_date);
+                else item.first_aired = "(no date found)";
+
+                // Add number of seasons
+                if (result.number_of_seasons && result.number_of_seasons !== "")
+                  item.seasons = result.number_of_seasons.toString();
+                else item.seasons = "(season data not found)";
+
+                // Add number of episodes
+                if (result.number_of_episodes && result.number_of_episodes !== "")
+                  item.episodes = result.number_of_episodes.toString();
+                else item.episodes = "(episode data not found)";
               }
-
-              // Add director(s)
-              if (directors.length > 0) item.director = directors.join(", ");
-              else item.director = "(no director(s) found)";
-
-              // Add release date
-              if (result.release_date && result.release_date !== "") item.released = formatDate(result.release_date);
-              else item.released = "(no date found)";
-
-              // Add runtime
-              if (result.runtime) item.runtime = `${result.runtime} min.`;
-              else item.runtime = "(no runtime found)";
-            } else if (item.type === "tv show") {
-              // Get list of creators
-              let creators = [];
-              if (result.created_by) {
-                result.created_by.forEach((member) => {
-                  creators.push(member.name);
-                });
-              }
-
-              // Add creator(s)
-              if (creators.length > 0) item.created_by = creators.join(", ");
-              else item.created_by = "(no creator(s) found)";
-
-              // Add first air date
-              if (result.first_air_date && result.first_air_date !== "")
-                item.first_aired = formatDate(result.first_air_date);
-              else item.first_aired = "(no date found)";
-
-              // Add number of seasons
-              if (result.number_of_seasons && result.number_of_seasons !== "")
-                item.seasons = result.number_of_seasons.toString();
-              else item.seasons = "(season data not found)";
-
-              // Add number of episodes
-              if (result.number_of_episodes && result.number_of_episodes !== "")
-                item.episodes = result.number_of_episodes.toString();
-              else item.episodes = "(episode data not found)";
-            }
-          })
-          .then(() => {
-            // Move to next page
-            this.props.nextPage();
-          });
+            })
+        );
       });
+
+      // Wait for all promises to complete, then move on
+      Promise.all(promises).then(() => this.props.nextPage());
     }
   }
 

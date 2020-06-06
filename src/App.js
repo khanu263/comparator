@@ -57,7 +57,7 @@ class App extends React.Component {
       case 4:
         return <Results nextPage={this.toEntry} />;
       default:
-        return <Ranker returnToStart={this.toEntry} nextPage={this.toResults} />;
+        return <Entry nextPage={this.toValidate} />;
     }
   }
 }

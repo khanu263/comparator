@@ -16,7 +16,7 @@ class Ranker extends React.Component {
     super(props);
 
     // Set up global points array and get matchups
-    data.points = new Array(data.items.length).fill(0);
+    // data.points = new Array(data.items.length).fill(0);
     this.matchups = data.generateMatchups(data.items);
     this.numMatchups = this.matchups.length;
 
@@ -38,10 +38,10 @@ class Ranker extends React.Component {
     let matchup = this.state.matchup;
 
     // Give a point to the winner, or 0.5 to both if a draw (x10 to prevent rounding error)
-    if (result < 2) data.points[this.matchups[matchup][result]] += 10;
+    if (result < 2) data.items[this.matchups[matchup][result]].points += 10;
     else {
-      data.points[this.matchups[matchup][0]] += 5;
-      data.points[this.matchups[matchup][1]] += 5;
+      data.items[this.matchups[matchup][0]].points += 5;
+      data.items[this.matchups[matchup][1]].points += 5;
     }
 
     // If this was the last matchup, move to the next page, otherwise increment
@@ -62,7 +62,7 @@ class Ranker extends React.Component {
 
   // Reset everything and go back to data entry
   resetAndReturn() {
-    data.input = [...data.emptyForm];
+    data.input = JSON.parse(JSON.stringify(data.emptyForm));
     data.items = [];
     this.props.returnToStart();
   }

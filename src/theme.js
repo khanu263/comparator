@@ -1,9 +1,9 @@
-// Theme.js
+// theme.js
 // by Umair Khan
 
 // Specify global theme attributes.
 
-const Theme = {
+const theme = {
   global: {
     colors: {
       brand: "#000",
@@ -19,4 +19,4 @@ const Theme = {
   },
 };
 
-export default Theme;
+export default theme;

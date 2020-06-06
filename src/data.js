@@ -20,7 +20,7 @@ var emptyForm = [
 ];
 
 // Array to hold user input from form
-var input = [...emptyForm];
+var input = JSON.parse(JSON.stringify(emptyForm));
 
 // var input = [
 //   {
@@ -62,9 +62,11 @@ var items;
 //     name: "The Pretender 2001",
 //     overview:
 //       "Picking up where the television series left off, 'The Pretender 2001' features even deeper explorations in the show's mythology, including a revealing look back at how Jarod originally espaced from the Centre. But now he must infiltrate the NSA to capture a ruthless assassin who might be a fellow Pretender from his past!",
+//     points: 15,
 //     poster: "(no poster found)",
 //     released: "January 22, 2001",
 //     runtime: "91 min.",
+//     score: "7",
 //     tmdb_id: "27338",
 //     type: "film",
 //   },
@@ -75,7 +77,9 @@ var items;
 //     name: "Carrie and Barry",
 //     overview:
 //       "Carrie and Barry is a sitcom, shown 2004 - 2005 on BBC One, starring Neil Morrissey, Claire Rushbrook, Mark Williams and Michelle Gomez. Produced by Hartswood Films, it reunited Morrissey with personnel from Men Behaving Badly: specifically writer Simon Nye, executive producer Beryl Vertue and director Martin Dennis. It was produced by Sue Vertue. Neil Morrissey plays part-time taxi driver Barry and Claire Rushbrook is his beautician wife Carrie. The couple find themselves with the daily challenges of keeping the spice in their marriage and the fun in their day jobs — as well as having to deal with Barry's teenage daughter Sinéad from his disastrous first marriage. Mark Williams plays Barry's mate Kirk, who co-owns his black cab whilst Michelle Gomez is Carrie's acid-tongued best friend and fellow beautician Michelle.",
+//     points: 15,
 //     poster: "(no poster found)",
+//     score: "(no score found)",
 //     seasons: "2",
 //     tmdb_id: "9132",
 //     type: "tv show",
@@ -85,9 +89,11 @@ var items;
 //     name: "Primer",
 //     overview:
 //       "Friends and fledgling entrepreneurs invent a device in their garage which reduces the apparent mass of any object placed inside it, but they discover that it has some highly unexpected capabilities - ones that could enable them to do and to have seemingly anything they want. Taking advantage of this unique opportunity is the first challenge they face. Dealing with the consequences is the next.",
+//     points: 40,
 //     poster: "https://image.tmdb.org/t/p/w342/xEoq2WmDzpzxhkHEsmOYOg6BPg6.jpg",
 //     released: "October 08, 2004",
 //     runtime: "77 min.",
+//     score: "6.8",
 //     tmdb_id: "14337",
 //     type: "film",
 //   },
@@ -98,19 +104,20 @@ var items;
 //     name: "The Expanse",
 //     overview:
 //       "A thriller set two hundred years in the future following the case of a missing young woman who brings a hardened detective and a rogue ship's captain together in a race across the solar system to expose the greatest conspiracy in human history.",
+//     points: 30,
 //     poster: "https://image.tmdb.org/t/p/w342/wikmaI7OVqmq2O9HfknkzxX6Ygu.jpg",
+//     score: "7.7",
 //     seasons: "4",
 //     tmdb_id: "63639",
 //     type: "tv show",
 //   },
 //   {
 //     name: "something else",
+//     points: 0,
+//     score: "-",
 //     type: "other",
 //   },
 // ];
-
-// Array to hold points for each object in Item array
-var points;
 
 // In-place Fisher-Yates shuffle on the given array
 // (https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb)
@@ -142,4 +149,4 @@ function generateMatchups(items) {
 }
 
 // Export everything
-export default { emptyForm, input, items, points, generateMatchups };
+export default { emptyForm, input, items, generateMatchups };

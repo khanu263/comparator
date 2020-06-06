@@ -93,7 +93,7 @@ class Entry extends React.Component {
   // Reset form
   reset() {
     this.setState(() => ({
-      values: [...data.emptyForm],
+      values: JSON.parse(JSON.stringify(data.emptyForm)),
     }));
   }
 
