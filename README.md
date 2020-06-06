@@ -1,68 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# comparator
 
-## Available Scripts
+**This project is live at [comparator.ukhan.dev](comparator.ukhan.dev).** Deployed with [Heroku](https://heroku.com/).
 
-In the project directory, you can run:
+A website that lets you rank a movies and television shows (and anything else, really) based on a series of binary contests. Powered by [TMDb](https://www.themoviedb.org/) and [TasteDive](https://tastedive.com/).
 
-### `npm start`
+### Run locally
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+git clone https://github.com/khanu263/comparator.git
+cd comparator
+npm install
+npm run start
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Project structure
 
-### `npm test`
+- `public` -- Primary HTML/CSS and static files.
+- `server` -- Simple Express server for serving up the app and favicon.
+- `src` -- React components, one per file. The exceptions are `theme.js` (the Grommet theme), `data.js` (data-related objects and functions), and `index.js` (root rendering).
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Libraries / frameworks 
 
-### `npm run build`
+- [React](https://reactjs.org/) (bootstrapped with [Create React App](https://create-react-app.dev/))
+- [Grommet](https://v2.grommet.io/) and [Grommet Icons](https://icons.grommet.io/)
+- [Express](https://expressjs.com/)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Acknowledgements
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- mpen on StackOverflow for going through [how to edit an array inside state](https://stackoverflow.com/a/49502115)
+- Nitin Patel for a very simple [JavaScript implementation of an in-place Fischer-Yates shuffle](https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb)
+- sideshowbarker on StackOverflow for explaining the [CORS Anywhere workaround](https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors) for TasteDive
