@@ -17,7 +17,7 @@ class Ranker extends React.Component {
 
     // Set up global points array and get matchups
     data.points = new Array(data.items.length).fill(0);
-    this.matchups = data.generateMatchups();
+    this.matchups = data.generateMatchups(data.items);
     this.numMatchups = this.matchups.length;
 
     // The state for this component contains the window width and the current matchup
@@ -27,8 +27,30 @@ class Ranker extends React.Component {
     };
 
     // Bind functions
+    this.updateMatchup = this.updateMatchup.bind(this);
     this.updateWidth = this.updateWidth.bind(this);
     this.resetAndReturn = this.resetAndReturn.bind(this);
+  }
+
+  // Update points and move to next matchup
+  updateMatchup(result) {
+    // Get the current matchup
+    let matchup = this.state.matchup;
+
+    // Give a point to the winner, or 0.5 to both if a draw (x10 to prevent rounding error)
+    if (result < 2) data.points[this.matchups[matchup][result]] += 10;
+    else {
+      data.points[this.matchups[matchup][0]] += 5;
+      data.points[this.matchups[matchup][1]] += 5;
+    }
+
+    // If this was the last matchup, move to the next page, otherwise increment
+    if (matchup === this.numMatchups - 1) this.props.nextPage();
+    else {
+      this.setState({
+        matchup: matchup + 1,
+      });
+    }
   }
 
   // Update state of width
@@ -70,17 +92,39 @@ class Ranker extends React.Component {
         </Paragraph>
         <Button secondary margin={{ bottom: "3em" }} color="brand" label="Start over" onClick={this.resetAndReturn} />
         <Box direction="row-responsive" gap="large">
-          <RankerPane item={data.items[2]} align="end" />
+          <RankerPane item={data.items[this.matchups[this.state.matchup][0]]} align="end" />
           {this.state.width > 768 ? (
             <Box direction="column" gap="small" align="center" width={{ min: "120px" }}>
-              <Button primary color="brand" icon={<FormPrevious />} label="This one" fill="horizontal" />
-              <Button primary color="brand" icon={<FormNext />} label="That one" reverse={true} fill="horizontal" />
-              <Button secondary color="brand" label="Draw" fill="horizontal" />
+              <Button
+                primary
+                color="brand"
+                icon={<FormPrevious />}
+                label="This one"
+                fill="horizontal"
+                onClick={() => this.updateMatchup(0)}
+              />
+              <Button
+                primary
+                color="brand"
+                icon={<FormNext />}
+                label="That one"
+                reverse={true}
+                fill="horizontal"
+                onClick={() => this.updateMatchup(1)}
+              />
+              <Button secondary color="brand" label="Draw" fill="horizontal" onClick={() => this.updateMatchup(2)} />
             </Box>
           ) : (
             <Box direction="column" gap="small" align="center">
-              <Button primary color="brand" icon={<FormUp />} label="This one" fill="horizontal" />
-              <Button secondary color="brand" label="Draw" fill="horizontal" />
+              <Button
+                primary
+                color="brand"
+                icon={<FormUp />}
+                label="This one"
+                fill="horizontal"
+                onClick={() => this.updateMatchup(1)}
+              />
+              <Button secondary color="brand" label="Draw" fill="horizontal" onClick={() => this.updateMatchup(2)} />
               <Button
                 primary
                 color="brand"
@@ -89,10 +133,11 @@ class Ranker extends React.Component {
                 reverse={true}
                 fill="horizontal"
                 margin={{ bottom: "0.5em" }}
+                onClick={() => this.updateMatchup(1)}
               />
             </Box>
           )}
-          <RankerPane item={data.items[1]} align="start" />
+          <RankerPane item={data.items[this.matchups[this.state.matchup][1]]} align="start" />
         </Box>
       </Box>
     );
